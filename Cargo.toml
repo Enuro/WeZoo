@@ -1,0 +1,40 @@
+[package]
+name = "WeZoo"
+version = "0.1.0"
+edition = "2021"
+
+# Основные зависимости
+[dependencies]
+# Веб-фреймворк
+actix-web = "4.9.0"
+# Работа с БД PostgreSQL
+sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros", "debug-print"] }
+# Асинхронный рантайм
+tokio = { version = "1.43.0", features = ["full"] }
+# Логирование
+env_logger = "0.10"
+log = "0.4"
+# Сериализация/десериализация JSON
+serde = { version = "1.0.218", features = ["derive"] }
+serde_json = "1.0.139"
+# Для удобной работы с датами и временем
+chrono = { version = "0.4", features = ["serde"] }
+# Уникальные идентификаторы (UUID)
+uuid = { version = "1.4", features = ["v4", "serde"] }
+# Безопасное хеширование паролей
+bcrypt = "0.15"
+# JWT-токены для аутентификации
+jsonwebtoken = "9.3"
+# Валидация данных
+validator = { version = "0.16", features = ["derive"] }
+# Чтение переменных окружения (.env)
+dotenvy = "0.15.7"
+
+# Тестирование
+[dev-dependencies]
+actix-rt = "2.9"     # Для тестирования асинхронных функций
+tokio-test = "0.4"   # Тестирование с использованием Tokio
+
+# Особые фичи для сборки в продакшн и для разработки
+[features]
+default = ["sea-orm/sqlx-postgres"]
