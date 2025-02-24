@@ -1,28 +1,31 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{middleware::Logger, web, App, HttpResponse, HttpServer};
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
-}
-
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
-}
-
-async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
-}
+mod routes;
+mod utils;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
+
+    if std::env::var_os("RUST_LOG").is_none(){
+        std::env::set_var("RUST_LOG", "actix_web=info");
+    }
+
+    dotenv::dotenv().ok();
+    env_logger::init();
+
+    let port: u16 = (*utils::constants::PORT).clone();
+    let address: String = (*utils::constants::ADDRESS).clone();
+
     HttpServer::new(|| {
         App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
+            .wrap(Logger::default())
+            .configure(routes::home_routers::config)
+            .route(
+                "/",
+                web::get().to(|| async { HttpResponse::Ok().body("/") }),
+            )
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind((address, port))?
     .run()
     .await
 }
