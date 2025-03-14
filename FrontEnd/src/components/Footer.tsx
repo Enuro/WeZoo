@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">PharmaCare</h3>
+            <h3 className="text-xl font-bold mb-4">Наша Аптека</h3>
             <p className="text-gray-300 mb-4">Ваш надежный партнер в сфере здравоохранения.</p>
             <div className="flex space-x-4">
               <a 
@@ -32,8 +32,9 @@ const Footer = () => {
                 className="text-gray-300 hover:text-white transition-colors"
                 title="Одноклассники"
               >
-                <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 4.8c1.987 0 3.6 1.613 3.6 3.6S13.987 12 12 12s-3.6-1.613-3.6-3.6S10.013 4.8 12 4.8zm0 12.24c-2.786 0-5.255-1.136-7.012-2.97.041-1.17 3.501-1.81 7.012-1.81 3.511 0 6.971.64 7.012 1.81-1.757 1.834-4.226 2.97-7.012 2.97zm0-8.64c1.325 0 2.4-1.075 2.4-2.4S13.325 3.6 12 3.6 9.6 4.675 9.6 6s1.075 2.4 2.4 2.4z"/>
+                <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="12" fill="white"/> 
+                  <path d="M12 3.2c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm0 5.6c-.89 0-1.6-.71-1.6-1.6S11.11 5.6 12 5.6s1.6.71 1.6 1.6-.71 1.6-1.6 1.6zM12 12c-2.98 0-5.74.91-7.66 2.56-.49.43-.54 1.17-.11 1.66s1.17.54 1.66.11c1.57-1.37 3.66-2.09 6.11-2.09s4.54.72 6.11 2.09c.49.43 1.23.38 1.66-.11s.38-1.23-.11-1.66C17.74 12.91 14.98 12 12 12zm2.36 3.94c-.76-.76-1.76-1.14-2.86-1.14s-2.1.38-2.86 1.14c-.46.46-.46 1.2 0 1.66.46.46 1.2.46 1.66 0 .3-.3.69-.46 1.14-.46s.84.16 1.14.46c.46.46 1.2.46 1.66 0 .46-.46.46-1.2 0-1.66z"/>
                 </svg>
               </a>
             </div>
@@ -83,7 +84,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-300">&copy; 2024 PharmaCare. Все права защищены.</p>
+          <p className="text-gray-300">&copy; 2024 Наша Аптека. Все права защищены.</p>
         </div>
       </div>
     </footer>
