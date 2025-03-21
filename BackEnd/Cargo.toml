@@ -10,7 +10,7 @@ members = [".", "entity", "migration"]
 entity = { path = "entity" }
 migration = { path = "migration" }  # depends on your needs 
 actix-web = "4.9.0"
-sea-orm = { version = "1.1.0", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
+sea-orm = { version = "1.1.7", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
 tokio = { version = "1.43.0", features = ["full"] }
 log = "0.4"
 serde = { version = "1.0.218", features = ["derive"] }
