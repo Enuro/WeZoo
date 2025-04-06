@@ -9,18 +9,19 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(Marking::Table)
+                    .table(Organizations::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(Marking::Id)
+                        ColumnDef::new(Organizations::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key()
+                            .unique_key()
                         )
-                    .col(ColumnDef::new(Marking::ReportId).integer().not_null().unique_key())
-                    .col(ColumnDef::new(Marking::Mark).string().not_null())
-                    .col(ColumnDef::new(Marking::GoodsId).integer().not_null().unique_key())
+                    .col(ColumnDef::new(Organizations::Name).string())
+                    .col(ColumnDef::new(Organizations::Desc).text())
+                    .col(ColumnDef::new(Organizations::Inn).string())
                     .to_owned(),
             )
             .await
@@ -28,16 +29,16 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(Marking::Table).to_owned())
+            .drop_table(Table::drop().table(Organizations::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-enum Marking {
+pub enum Organizations {
     Table,
     Id,
-    ReportId,
-    Mark,
-    GoodsId,
+    Name,
+    Desc,
+    Inn,
 }

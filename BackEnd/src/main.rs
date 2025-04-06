@@ -1,4 +1,4 @@
-use actix_web::{middleware::Logger, web, App, HttpResponse, HttpServer};
+use actix_web::{middleware::Logger, web, App, HttpServer};
 use sea_orm::{Database, DatabaseConnection};
 use utils::app_state::AppState;
 use migration::{Migrator, MigratorTrait};
@@ -28,11 +28,8 @@ async fn main() -> std::io::Result<()> {
         App::new()
             .app_data(web::Data::new(AppState{db: db.clone()}))
             .wrap(Logger::default())
-            .configure(routes::home_routers::config)
-            .route(
-                "/",
-                web::get().to(|| async { HttpResponse::Ok().body("/") }),
-            )
+            .configure(routes::home_routes::config)
+            .configure(routes::auth_routes::config)
     })
     .bind((address, port))?
     .run()

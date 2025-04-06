@@ -1,5 +1,7 @@
 use sea_orm_migration::{prelude::*, schema::*};
 
+use crate::m20250001_000004_create_organizations_table::Organizations;
+
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
@@ -17,11 +19,18 @@ impl MigrationTrait for Migration {
                             .not_null()
                             .auto_increment()
                             .primary_key()
+                            .unique_key()
                         )
-                    .col(ColumnDef::new(Cliniks::Name).string().not_null())
-                    .col(ColumnDef::new(Cliniks::Description).text().not_null())
-                    .col(ColumnDef::new(Cliniks::Coords).string().not_null())
-                    .col(ColumnDef::new(Cliniks::OrgId).integer().not_null().unique_key())
+                    .col(ColumnDef::new(Cliniks::Name).string())
+                    .col(ColumnDef::new(Cliniks::Description).text())
+                    .col(ColumnDef::new(Cliniks::Coords).string())
+                    .col(ColumnDef::new(Cliniks::OrgId).integer())
+                    .foreign_key(
+                        ForeignKey::create()
+                        .name("fk_cliniks_org_id_organization")
+                        .from(Cliniks::Table, Cliniks::OrgId)
+                        .to(Organizations::Table, Organizations::Id)
+                    )
                     .to_owned(),
             )
             .await
@@ -35,7 +44,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Cliniks {
+pub enum Cliniks {
     Table,
     Id,
     Name,

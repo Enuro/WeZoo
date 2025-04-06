@@ -3,32 +3,32 @@
 use sea_orm::entity::prelude::*;
 
 #[derive(Clone, Debug, PartialEq, DeriveEntityModel, Eq)]
-#[sea_orm(table_name = "user")]
+#[sea_orm(table_name = "pet_types")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    pub first_name: Option<String>,
-    pub last_name: Option<String>,
-    pub patronymic: Option<String>,
-    pub phone: Option<String>,
-    pub email: Option<String>,
-    pub password: Option<String>,
-    pub data_reg: Option<String>,
-    pub data_birt: Option<String>,
-    pub role: Option<String>,
+    pub name: Option<String>,
 }
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {
-    #[sea_orm(has_many = "super::orders::Entity")]
-    Orders,
+    #[sea_orm(has_many = "super::goods_pets::Entity")]
+    GoodsPets,
+    #[sea_orm(has_many = "super::pet_breeds::Entity")]
+    PetBreeds,
     #[sea_orm(has_many = "super::pets::Entity")]
     Pets,
 }
 
-impl Related<super::orders::Entity> for Entity {
+impl Related<super::goods_pets::Entity> for Entity {
     fn to() -> RelationDef {
-        Relation::Orders.def()
+        Relation::GoodsPets.def()
+    }
+}
+
+impl Related<super::pet_breeds::Entity> for Entity {
+    fn to() -> RelationDef {
+        Relation::PetBreeds.def()
     }
 }
 

@@ -9,17 +9,18 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(GoodsGroup::Table)
+                    .table(GoodsClasses::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(GoodsGroup::Id)
+                        ColumnDef::new(GoodsClasses::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key()
+                            .unique_key()
                         )
-                    .col(ColumnDef::new(GoodsGroup::ParentId).integer().not_null().unique_key())
-                    .col(ColumnDef::new(GoodsGroup::Name).string().not_null())
+                    .col(ColumnDef::new(GoodsClasses::Name).string())
+                    .col(ColumnDef::new(GoodsClasses::Description).text())
                     .to_owned(),
             )
             .await
@@ -27,15 +28,15 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(GoodsGroup::Table).to_owned())
+            .drop_table(Table::drop().table(GoodsClasses::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-enum GoodsGroup {
+pub enum GoodsClasses {
     Table,
     Id,
-    ParentId,
     Name,
+    Description,
 }

@@ -9,17 +9,24 @@ impl MigrationTrait for Migration {
         manager
             .create_table(
                 Table::create()
-                    .table(GoodsPets::Table)
+                    .table(GoodsGroup::Table)
                     .if_not_exists()
                     .col(
-                        ColumnDef::new(GoodsPets::Id)
+                        ColumnDef::new(GoodsGroup::Id)
                             .integer()
                             .not_null()
                             .auto_increment()
                             .primary_key()
+                            .unique_key()
                         )
-                    .col(ColumnDef::new(GoodsPets::GoodsId).integer().not_null().unique_key())
-                    .col(ColumnDef::new(GoodsPets::PetTypesId).integer().not_null().unique_key())
+                    .col(ColumnDef::new(GoodsGroup::ParentId).integer())
+                    .col(ColumnDef::new(GoodsGroup::Name).string())
+                    .foreign_key(
+                        ForeignKey::create()
+                        .name("fk_goods_groups_parent_id_goods_groups")
+                        .from(GoodsGroup::Table, GoodsGroup::ParentId)
+                        .to(GoodsGroup::Table, GoodsGroup::Id)
+                    )
                     .to_owned(),
             )
             .await
@@ -27,15 +34,15 @@ impl MigrationTrait for Migration {
 
     async fn down(&self, manager: &SchemaManager) -> Result<(), DbErr> {
         manager
-            .drop_table(Table::drop().table(GoodsPets::Table).to_owned())
+            .drop_table(Table::drop().table(GoodsGroup::Table).to_owned())
             .await
     }
 }
 
 #[derive(DeriveIden)]
-enum GoodsPets {
+pub enum GoodsGroup {
     Table,
     Id,
-    GoodsId,
-    PetTypesId,
+    ParentId,
+    Name,
 }

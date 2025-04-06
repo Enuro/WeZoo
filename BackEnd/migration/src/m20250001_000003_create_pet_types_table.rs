@@ -16,8 +16,10 @@ impl MigrationTrait for Migration {
                             .integer()
                             .not_null()
                             .auto_increment()
-                            .primary_key())
-                    .col(ColumnDef::new(PetTypes::Name).string().not_null().unique_key())
+                            .primary_key()
+                            .unique_key()
+                        )
+                    .col(ColumnDef::new(PetTypes::Name).string())
                     .to_owned(),
             )
             .await
@@ -31,7 +33,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum PetTypes {
+pub enum PetTypes {
     Table,
     Id,
     Name,

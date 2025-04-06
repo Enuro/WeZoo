@@ -16,15 +16,18 @@ impl MigrationTrait for Migration {
                             .integer()
                             .not_null()
                             .auto_increment()
-                            .primary_key())
-                    .col(ColumnDef::new(User::NameF).string().not_null())
-                    .col(ColumnDef::new(User::NameM).string().not_null())
-                    .col(ColumnDef::new(User::NameS).string().not_null())
-                    .col(ColumnDef::new(User::Phone).string().not_null().unique_key())
-                    .col(ColumnDef::new(User::Email).string().not_null().unique_key())
-                    .col(ColumnDef::new(User::Password).string().not_null())
-                    .col(ColumnDef::new(User::DataReg).string().not_null().date())
-                    .col(ColumnDef::new(User::DataBirt).string().not_null().date())
+                            .primary_key()
+                            .unique_key()
+                        )
+                    .col(ColumnDef::new(User::FirstName).string())
+                    .col(ColumnDef::new(User::LastName).string())
+                    .col(ColumnDef::new(User::Patronymic).string())
+                    .col(ColumnDef::new(User::Phone).string().unique_key())
+                    .col(ColumnDef::new(User::Email).string().unique_key())
+                    .col(ColumnDef::new(User::Password).string())
+                    .col(ColumnDef::new(User::DataReg).string())
+                    .col(ColumnDef::new(User::DataBirt).string())
+                    .col(ColumnDef::new(User::Role).string())
                     .to_owned(),
             )
             .await
@@ -39,15 +42,16 @@ impl MigrationTrait for Migration {
 
 
 #[derive(DeriveIden)]
-enum User {
+pub enum User {
     Table,
     Id,
-    NameF,
-    NameM,
-    NameS,
+    FirstName,
+    LastName,
+    Patronymic,
     Phone,
     Email,
     Password,
     DataReg,
-    DataBirt
+    DataBirt,
+    Role
 }

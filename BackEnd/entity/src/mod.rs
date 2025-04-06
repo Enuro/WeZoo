@@ -2,4 +2,19 @@
 
 pub mod prelude;
 
+pub mod cliniks;
+pub mod goods;
+pub mod goods_classes;
+pub mod goods_group;
+pub mod goods_orgs;
+pub mod goods_pets;
+pub mod marking;
+pub mod orders;
+pub mod organizations;
+pub mod pet_breeds;
+pub mod pet_types;
+pub mod pets;
+pub mod producers;
+pub mod reports;
+pub mod stocks;
 pub mod user;

@@ -1,5 +1,8 @@
 use sea_orm_migration::{prelude::*, schema::*};
 
+use crate::m20250001_000010_create_goods_table::Goods;
+use crate::m20250001_000006_create_cliniks_table::Cliniks;
+
 #[derive(DeriveMigrationName)]
 pub struct Migration;
 
@@ -18,9 +21,21 @@ impl MigrationTrait for Migration {
                             .auto_increment()
                             .primary_key()
                         )
-                    .col(ColumnDef::new(Stocks::GoodsId).integer().not_null().unique_key())
-                    .col(ColumnDef::new(Stocks::ClinicId).integer().not_null().unique_key())
+                    .col(ColumnDef::new(Stocks::GoodsId).string().not_null().unique_key())
+                    .col(ColumnDef::new(Stocks::ClinicId).integer().not_null())
                     .col(ColumnDef::new(Stocks::Quantity).integer().not_null())
+                    .foreign_key(
+                        ForeignKey::create()
+                        .name("fk_cliniks_id_stocks")
+                        .from(Stocks::Table, Stocks::ClinicId)
+                        .to(Cliniks::Table, Cliniks::Id)
+                    )
+                    .foreign_key(
+                        ForeignKey::create()
+                        .name("fk_stocks_goods_id_goods")
+                        .from(Stocks::Table, Stocks::GoodsId)
+                        .to(Goods::Table, Goods::IdExt)
+                    )
                     .to_owned(),
             )
             .await
@@ -34,7 +49,7 @@ impl MigrationTrait for Migration {
 }
 
 #[derive(DeriveIden)]
-enum Stocks {
+pub enum Stocks {
     Table,
     Id,
     GoodsId,
