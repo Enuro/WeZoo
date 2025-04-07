@@ -1,6 +1,4 @@
-use std::fmt::format;
 use actix_web::{post, web, Responder};
-use actix_web::http::header::Date;
 use sea_orm::{
     ActiveValue::Set, 
     EntityTrait, 
@@ -13,7 +11,7 @@ use serde::{Serialize, Deserialize};
 use sha256::digest;
 
 use crate::utils::jwt::encode_jwt;
-use crate::utils::{api_response, app_state::{self, AppState}};
+use crate::utils::{api_response, app_state::AppState};
 
 #[derive(Serialize, Deserialize)]
 struct RegisterModel {
