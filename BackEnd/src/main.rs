@@ -1,7 +1,9 @@
-use actix_web::{middleware::Logger, web, App, HttpServer};
+use actix_web::{middleware::Logger, web, App, HttpServer, HttpResponse};
+use actix_cors::Cors;
 use sea_orm::{Database, DatabaseConnection};
 use utils::app_state::AppState;
 use migration::{Migrator, MigratorTrait};
+use actix_web::http::header;
 
 
 mod routes;
@@ -25,7 +27,14 @@ async fn main() -> std::io::Result<()> {
     Migrator::up(&db, None).await.unwrap();
 
     HttpServer::new(move || {
+        let cors = Cors::default()
+            .allowed_origin("http://localhost:5173") // URL вашего React-приложения
+            .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
+            .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT, header::CONTENT_TYPE])
+            .max_age(3600);
+
         App::new()
+            .wrap(cors)
             .app_data(web::Data::new(AppState{db: db.clone()}))
             .wrap(Logger::default())
             .configure(routes::home_routes::config)
