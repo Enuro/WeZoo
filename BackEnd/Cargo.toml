@@ -9,7 +9,7 @@ members = [".", "entity", "migration"]
 [dependencies]
 entity = { path = "entity" }
 migration = { path = "migration" }  # depends on your needs 
-actix-web = "4.9.0"
+actix-web = "4.10.2"
 sea-orm = { version = "1.1.7", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros" ] }
 tokio = { version = "1.43.0", features = ["full"] }
 log = "0.4"
@@ -25,6 +25,7 @@ dotenv = "0.15.0"
 lazy_static = "1.4.0"
 sha256 = "1.6.0"
 actix-cors = "0.7.1"
+actix-web-lab = "0.24.1"
 
 [dev-dependencies]
 actix-rt = "2.9"
