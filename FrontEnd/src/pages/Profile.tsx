@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authApi } from '../services/api';
+import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 interface UserProfile {
   firstName: string;
@@ -21,6 +23,9 @@ function Profile() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  
+  const { logout } = useAuthStore();
+  const navigate = useNavigate();
 
   // Загрузка данных профиля при монтировании
   useEffect(() => {
@@ -66,6 +71,11 @@ function Profile() {
     setTimeout(() => {
       setSaveSuccess(false);
     }, 3000);
+  };
+  
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
   };
 
   if (loading) {
@@ -166,12 +176,20 @@ function Profile() {
           </div>
         </div>
 
-        <div className="pt-4">
+        <div className="pt-4 space-y-4">
           <button
             type="submit"
             className="w-full px-6 py-3 bg-emerald-600 text-white rounded-md hover:bg-emerald-700 transition-colors"
           >
             Сохранить изменения
+          </button>
+          
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="w-full px-6 py-3 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+          >
+            Выйти из аккаунта
           </button>
         </div>
       </form>
