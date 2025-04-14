@@ -17,6 +17,16 @@ function PrivateRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function PublicRoute({ children }: { children: React.ReactNode }) {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  
+  if (isAuthenticated) {
+    return <Navigate to="/" />;
+  }
+
+  return <>{children}</>;
+}
+
 function App() {
   return (
     <Router>
@@ -25,7 +35,14 @@ function App() {
         <main className="flex-grow container mx-auto px-4 pt-24 pb-8">
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/auth" element={<Auth />} />
+            <Route 
+              path="/auth" 
+              element={
+                <PublicRoute>
+                  <Auth />
+                </PublicRoute>
+              } 
+            />
             <Route 
               path="/profile" 
               element={
