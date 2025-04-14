@@ -27,6 +27,7 @@ sha256 = "1.6.0"
 actix-cors = "0.7.1"
 actix-web-lab = "0.24.1"
 validator_types = "0.16.0"
+actix-web-httpauth = "0.8.2"
 
 
 [dev-dependencies]
