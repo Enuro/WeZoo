@@ -40,7 +40,7 @@ export const authApi = {
       } else {
         // Улучшенная обработка конкретных ошибок
         if (response.status === 401) {
-          return { success: false, error: 'Неверный email или пароль' };
+          return { success: false, error: 'Неверные учетные данные для входа' };
         } else if (response.status === 404) {
           return { success: false, error: 'Пользователь не найден' };
         } else {
@@ -75,7 +75,9 @@ export const authApi = {
         if (response.status === 409) {
           return { 
             success: false, 
-            error: 'Пользователь с таким email или телефоном уже существует' 
+            error: data.email 
+              ? 'Пользователь с таким email уже существует'
+              : 'Пользователь с таким телефоном уже существует'
           };
         } else if (response.status === 400) {
           return { 

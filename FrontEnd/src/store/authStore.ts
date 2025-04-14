@@ -1,12 +1,18 @@
 import { create } from 'zustand';
 import { authApi } from '../services/api';
 
+interface LoginParams {
+  email?: string;
+  phone?: string;
+  password?: string;
+}
+
 interface AuthState {
   isAuthenticated: boolean;
   token: string | null;
   loading: boolean;
   error: string | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (params: LoginParams) => Promise<boolean>;
   register: (data: {
     first_name: string;
     last_name: string;
@@ -24,10 +30,10 @@ export const useAuthStore = create<AuthState>((set) => ({
   loading: false,
   error: null,
   
-  login: async (email: string, password: string) => {
+  login: async (params: LoginParams) => {
     set({ loading: true, error: null });
     
-    const response = await authApi.login({ email, password });
+    const response = await authApi.login(params);
     
     if (response.success && response.data) {
       localStorage.setItem('token', response.data.token);

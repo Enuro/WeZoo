@@ -32,12 +32,10 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
   const [width, setWidth] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
-  const [progress, setProgress] = useState(0);
   
   const carousel = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const autoplayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const progressRef = useRef<number>(0);
   const animationRef = useRef<number | null>(null);
   
   // Рассчитываем ширину карусели для анимации
@@ -67,10 +65,16 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
     }, 2000); // Возобновить автопрокрутку через 2 секунды после взаимодействия
   };
   
-  // Обновляем прогресс для индикатора
-  const updateProgress = (newProgress: number) => {
-    progressRef.current = newProgress;
-    setProgress(newProgress);
+  // Получение текущей позиции слайдера из DOM
+  const getCurrentPosition = (): number => {
+    if (!carousel.current || !carousel.current.firstChild) return 0;
+    
+    const transform = (carousel.current.firstChild as HTMLElement).style.transform;
+    const match = transform.match(/translateX\((.+?)px\)/);
+    if (match && match[1]) {
+      return parseFloat(match[1]);
+    }
+    return 0;
   };
   
   // Автоматическая прокрутка с использованием requestAnimationFrame
@@ -78,7 +82,7 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
     if (!autoplay || isDragging || width <= 0) return;
     
     const startTime = Date.now();
-    const duration = 20000; // 20 секунд на полный цикл прокрутки
+    const duration = 40000; // 40 секунд на полный цикл прокрутки (замедлили с 20 до 40 секунд)
     
     const animate = () => {
       const now = Date.now();
@@ -88,9 +92,8 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       // Текущая позиция для прокрутки
       const position = -width * loopProgress;
       
-      // Обновляем позицию и прогресс
+      // Обновляем позицию
       controls.set({ x: position });
-      updateProgress(loopProgress * 100);
       
       // Продолжаем анимацию
       animationRef.current = requestAnimationFrame(animate);
@@ -136,15 +139,8 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       animationRef.current = null;
     }
     
-    // Получаем текущую позицию через стиль transform
-    let currentX = 0;
-    if (carousel.current && carousel.current.firstChild) {
-      const transform = (carousel.current.firstChild as HTMLElement).style.transform;
-      const match = transform.match(/translateX\((.+?)px\)/);
-      if (match && match[1]) {
-        currentX = parseFloat(match[1]);
-      }
-    }
+    // Получаем текущую позицию
+    const currentX = getCurrentPosition();
     
     // Прокручиваем на 300px влево (или до начала)
     const newPosition = Math.min(0, currentX + 300);
@@ -152,10 +148,6 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       x: newPosition,
       transition: { duration: 0.5 }
     });
-    
-    // Обновляем индикатор прогресса
-    const newProgress = Math.max(0, Math.min(100, (-newPosition / width) * 100));
-    updateProgress(newProgress);
     
     startAutoplay();
   };
@@ -168,15 +160,8 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       animationRef.current = null;
     }
     
-    // Получаем текущую позицию через стиль transform
-    let currentX = 0;
-    if (carousel.current && carousel.current.firstChild) {
-      const transform = (carousel.current.firstChild as HTMLElement).style.transform;
-      const match = transform.match(/translateX\((.+?)px\)/);
-      if (match && match[1]) {
-        currentX = parseFloat(match[1]);
-      }
-    }
+    // Получаем текущую позицию
+    const currentX = getCurrentPosition();
     
     // Прокручиваем на 300px вправо (или до конца)
     const newPosition = Math.max(-width, currentX - 300);
@@ -184,10 +169,6 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       x: newPosition,
       transition: { duration: 0.5 }
     });
-    
-    // Обновляем индикатор прогресса
-    const newProgress = Math.max(0, Math.min(100, (-newPosition / width) * 100));
-    updateProgress(newProgress);
     
     startAutoplay();
   };
@@ -247,16 +228,6 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
             </motion.div>
           ))}
         </motion.div>
-      </div>
-      
-      {/* Индикатор прокрутки */}
-      <div className="flex justify-center mt-4">
-        <div className="w-16 h-1 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className="h-full bg-emerald-600"
-            style={{ width: `${autoplay ? progress : progress}%` }}
-          />
-        </div>
       </div>
     </div>
   );

@@ -5,16 +5,17 @@ import { validateEmail, validatePhone, validatePassword, validateName, formatPho
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
+  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
   
   // Поля для входа
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   
   // Дополнительные поля для регистрации
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [patronymic, setPatronymic] = useState('');
-  const [phone, setPhone] = useState('');
   
   // Ошибки валидации
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -59,30 +60,31 @@ function Auth() {
     setLastNameError(null);
     setGeneralError(null);
     
-    // Проверка на наличие хотя бы одного метода входа
-    if (!email && !phone) {
-      setGeneralError('Необходимо указать email или телефон');
-      isValid = false;
-    }
-    
-    // Проверка email, если он указан
-    if (email && !validateEmail(email)) {
-      setEmailError('Некорректный формат email');
-      isValid = false;
-    }
-    
-    // Проверка пароля для email
-    if (email && (!password || (isLoginForm ? false : !validatePassword(password)))) {
-      setPasswordError(isLoginForm 
-        ? 'Необходимо указать пароль для входа по email' 
-        : 'Пароль должен содержать минимум 6 символов, включая буквы и цифры');
-      isValid = false;
-    }
-    
-    // Проверка телефона, если он указан
-    if (phone && !validatePhone(phone.replace(/\D/g, ''))) {
-      setPhoneError('Некорректный формат телефона');
-      isValid = false;
+    // Проверяем поля в зависимости от выбранного метода
+    if (authMethod === 'email') {
+      if (!email) {
+        setEmailError('Пожалуйста, введите email');
+        isValid = false;
+      } else if (!validateEmail(email)) {
+        setEmailError('Некорректный формат email');
+        isValid = false;
+      }
+      
+      if (!password) {
+        setPasswordError('Необходимо указать пароль для входа по email');
+        isValid = false;
+      } else if (!isLoginForm && !validatePassword(password)) {
+        setPasswordError('Пароль должен содержать минимум 6 символов, включая буквы и цифры');
+        isValid = false;
+      }
+    } else { // phone
+      if (!phone) {
+        setPhoneError('Пожалуйста, введите номер телефона');
+        isValid = false;
+      } else if (!validatePhone(phone.replace(/\D/g, ''))) {
+        setPhoneError('Некорректный формат телефона');
+        isValid = false;
+      }
     }
     
     // Дополнительные проверки для формы регистрации
@@ -110,8 +112,15 @@ function Auth() {
     
     setLoading(true);
     
-    const formattedPhone = phone ? formatPhone(phone) : undefined;
-    const success = await login(email, password);
+    // Формируем данные в зависимости от метода авторизации
+    let loginData = {};
+    if (authMethod === 'email') {
+      loginData = { email, password };
+    } else {
+      loginData = { phone: formatPhone(phone) };
+    }
+    
+    const success = await login(loginData);
     setLoading(false);
     
     if (success) {
@@ -128,24 +137,61 @@ function Auth() {
     
     setLoading(true);
     
-    const formattedPhone = phone ? formatPhone(phone) : undefined;
-    const registerData = {
+    // Создаем базовый объект данных регистрации
+    const registerData: {
+      first_name: string;
+      last_name: string;
+      patronymic: string;
+      email?: string;
+      phone?: string;
+      password?: string;
+    } = {
       first_name: firstName,
       last_name: lastName,
       patronymic,
-      email: email || undefined,
-      phone: formattedPhone || undefined,
-      password: password || undefined
     };
+    
+    // Добавляем поля в зависимости от метода регистрации
+    if (authMethod === 'email') {
+      registerData.email = email;
+      registerData.password = password;
+    } else {
+      // Форматируем телефон только если он указан
+      registerData.phone = phone ? formatPhone(phone) : undefined;
+    }
     
     const success = await register(registerData);
     setLoading(false);
     
     if (success) {
-      // После успешной регистрации переключаемся на форму входа
-      setIsLogin(true);
-      setGeneralError('Регистрация успешна! Теперь вы можете войти.');
+      // После успешной регистрации автоматически авторизуем пользователя
+      let loginData;
+      if (authMethod === 'email') {
+        loginData = { email, password };
+      } else {
+        loginData = { phone: registerData.phone };
+      }
+      
+      const loginSuccess = await login(loginData);
+      
+      if (loginSuccess) {
+        // Перенаправляем в профиль после успешной авторизации
+        navigate('/profile');
+      } else {
+        // Если автоматическая авторизация не удалась, показываем сообщение
+        setIsLogin(true);
+        setGeneralError('Регистрация успешна! Войдите, используя свои данные.');
+      }
     }
+  };
+
+  // Обработчик переключения метода авторизации
+  const handleAuthMethodChange = (method: 'email' | 'phone') => {
+    setAuthMethod(method);
+    // Сбрасываем ошибки при переключении
+    setEmailError(null);
+    setPasswordError(null);
+    setPhoneError(null);
   };
 
   return (
@@ -160,57 +206,85 @@ function Auth() {
         </div>
       )}
       
+      {/* Табы для выбора метода авторизации */}
+      <div className="flex mb-6 border-b border-gray-200">
+        <button
+          className={`flex-1 py-2 px-4 text-center ${
+            authMethod === 'email' 
+              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+          onClick={() => handleAuthMethodChange('email')}
+        >
+          По Email
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 text-center ${
+            authMethod === 'phone' 
+              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+          onClick={() => handleAuthMethodChange('phone')}
+        >
+          По телефону
+        </button>
+      </div>
+      
       {isLogin ? (
         // Форма входа
         <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setEmailError(null);
-              }}
-              className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
-          </div>
-          
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              Телефон
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={handlePhoneChange}
-              placeholder="+7 (999) 999-99-99"
-              className={`w-full px-4 py-2 border ${phoneError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {phoneError && <p className="mt-1 text-sm text-red-500">{phoneError}</p>}
-          </div>
-          
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Пароль
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setPasswordError(null);
-              }}
-              className={`w-full px-4 py-2 border ${passwordError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
-          </div>
+          {authMethod === 'email' ? (
+            <>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError(null);
+                  }}
+                  className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+                />
+                {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  Пароль
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPasswordError(null);
+                  }}
+                  className={`w-full px-4 py-2 border ${passwordError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+                />
+                {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
+              </div>
+            </>
+          ) : (
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                Телефон
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={phone}
+                onChange={handlePhoneChange}
+                placeholder="+7 (999) 999-99-99"
+                className={`w-full px-4 py-2 border ${phoneError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+              />
+              {phoneError && <p className="mt-1 text-sm text-red-500">{phoneError}</p>}
+            </div>
+          )}
 
           <button
             type="submit"
@@ -273,54 +347,58 @@ function Auth() {
             />
           </div>
           
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setEmailError(null);
-              }}
-              className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
-          </div>
-          
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              Телефон
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              value={phone}
-              onChange={handlePhoneChange}
-              placeholder="+7 (999) 999-99-99"
-              className={`w-full px-4 py-2 border ${phoneError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {phoneError && <p className="mt-1 text-sm text-red-500">{phoneError}</p>}
-          </div>
-          
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-              Пароль
-            </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setPasswordError(null);
-              }}
-              className={`w-full px-4 py-2 border ${passwordError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
-            />
-            {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
-          </div>
+          {authMethod === 'email' ? (
+            <>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setEmailError(null);
+                  }}
+                  className={`w-full px-4 py-2 border ${emailError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+                />
+                {emailError && <p className="mt-1 text-sm text-red-500">{emailError}</p>}
+              </div>
+              
+              <div>
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                  Пароль
+                </label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    setPasswordError(null);
+                  }}
+                  className={`w-full px-4 py-2 border ${passwordError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+                />
+                {passwordError && <p className="mt-1 text-sm text-red-500">{passwordError}</p>}
+              </div>
+            </>
+          ) : (
+            <div>
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                Телефон
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={phone}
+                onChange={handlePhoneChange}
+                placeholder="+7 (999) 999-99-99"
+                className={`w-full px-4 py-2 border ${phoneError ? 'border-red-500' : 'border-gray-300'} rounded-md focus:ring-emerald-500 focus:border-emerald-500`}
+              />
+              {phoneError && <p className="mt-1 text-sm text-red-500">{phoneError}</p>}
+            </div>
+          )}
 
           <button
             type="submit"
