@@ -9,23 +9,28 @@ use sea_orm::{
 };
 use serde::{Serialize, Deserialize};
 use sha256::digest;
+use validator::Validate;
 
 use crate::utils::jwt::encode_jwt;
 use crate::utils::{api_response, app_state::AppState};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Validate)]
 struct RegisterModel {
     first_name: String,
     last_name: String,
     patronymic: String,
+    #[validate(email)]
     email: Option<String>,
+    #[validate(phone)]
     phone: Option<String>,
     password: Option<String>
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Validate)]
 struct LoginModel {
+    #[validate(email)]
     email: Option<String>,
+    #[validate(phone)]
     phone: Option<String>,
     password: Option<String>
 }
@@ -39,7 +44,11 @@ pub async fn register(
     if register_json.email.is_none() && register_json.phone.is_none() {
         return api_response::ApiResponse::new(400, "Необходимо указать email или номер телефона".to_string());
     }
-    
+
+    if let Err(err) = register_json.validate() {
+        return api_response::ApiResponse::new(400, format!("Validation error: {:?}", err));
+    }
+
     // Проверка на наличие пароля для email
     if register_json.email.is_some() && register_json.password.is_none() {
         return api_response::ApiResponse::new(400, "Для регистрации по email необходимо указать пароль".to_string());
@@ -113,7 +122,10 @@ pub async fn login(
     }
     
     let mut user = None;
-    
+
+    if let Err(err) = login_json.validate() {
+        return api_response::ApiResponse::new(400, format!("Validation error: {:?}", err));
+    }
     // Поиск пользователя по email и паролю
     if let Some(email) = &login_json.email {
         if let Some(password) = &login_json.password {
