@@ -13,6 +13,11 @@ const Header = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuthStore();
 
+  // Закрываем меню при изменении маршрута (когда человек кликает на ссылку)
+  useEffect(() => {
+    setIsMenuOpen(false);
+  }, [location.pathname]);
+
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -34,7 +39,10 @@ const Header = () => {
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      if (window.scrollY > 50) {
+      
+      // Закрываем меню и поиск при прокрутке
+      if (window.scrollY > 0) {
+        setIsMenuOpen(false);
         setIsSearchOpen(false);
       }
     };
@@ -49,6 +57,14 @@ const Header = () => {
     } else {
       navigate('/profile');
     }
+    // Закрываем меню при клике на иконку профиля
+    setIsMenuOpen(false);
+  };
+
+  // Обработчик клика для навигации с закрытием меню
+  const handleNavigation = (path: string) => {
+    navigate(path);
+    setIsMenuOpen(false);
   };
 
   return (
@@ -147,9 +163,27 @@ const Header = () => {
                   className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-emerald-500"
                 />
               </div>
-              <Link to="/" className="block py-2 text-gray-600">Каталог</Link>
-              <Link to="/" className="block py-2 text-gray-600">Акции</Link>
-              <Link to="/" className="block py-2 text-gray-600">Контакты</Link>
+              <Link 
+                to="/" 
+                className="block py-2 text-gray-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Каталог
+              </Link>
+              <Link 
+                to="/" 
+                className="block py-2 text-gray-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Акции
+              </Link>
+              <Link 
+                to="/" 
+                className="block py-2 text-gray-600"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Контакты
+              </Link>
               <div className="flex space-x-4 py-2">
                 <button 
                   className="text-gray-600"
@@ -157,7 +191,10 @@ const Header = () => {
                 >
                   <User className="w-6 h-6" />
                 </button>
-                <button className="text-gray-600">
+                <button 
+                  className="text-gray-600"
+                  onClick={() => setIsMenuOpen(false)}
+                >
                   <Heart className="w-6 h-6" />
                 </button>
                 <button 
