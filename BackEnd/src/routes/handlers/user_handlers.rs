@@ -32,8 +32,8 @@ pub async fn profile(
         first_name: user.clone().unwrap().first_name.expect("REASON").to_string(),
         last_name: user.clone().unwrap().last_name.expect("REASON").to_string(),
         patronymic: user.clone().unwrap().patronymic.expect("REASON").to_string(),
-        email: Some(user.clone().unwrap().email.expect("REASON").to_string()),
-        phone: Some(user.clone().unwrap().phone.expect("REASON").to_string())
+        email: Some(user.clone().unwrap().email.expect("REASON")),
+        phone: Some(user.clone().unwrap().phone.expect("REASON"))
     };
 
     HttpResponse::Ok().json(usr);
