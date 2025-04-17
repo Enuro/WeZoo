@@ -4,14 +4,14 @@ use serde::Serialize;
 
 use crate::utils::{api_response::ApiResponse, app_state::AppState, jwt::Claims};
 
-// #[derive(Serialize)]
-// // struct User{
-// //     first_name: String,
-// //     last_name: String,
-// //     patronymic: String,
-// //     email: Option<String>,
-// //     phone: Option<String>,
-// // }
+#[derive(Serialize, Default)]
+struct User{
+    first_name: String,
+    last_name: String,
+    patronymic: String,
+    email: Option<String>,
+    phone: Option<String>,
+}
 
 #[get("/profile")]
 pub async fn profile(   
@@ -28,7 +28,15 @@ pub async fn profile(
         .await
         .unwrap();
 
-        HttpResponse::Ok().json(user.clone());
+    let usr = User{
+        first_name: user.clone().unwrap().first_name.expect("REASON").to_string(),
+        last_name: user.clone().unwrap().last_name.expect("REASON").to_string(),
+        patronymic: user.clone().unwrap().patronymic.expect("REASON").to_string(),
+        email: Some(user.clone().unwrap().email.expect("REASON").to_string()),
+        phone: Some(user.clone().unwrap().phone.expect("REASON").to_string())
+    };
+
+    HttpResponse::Ok().json(usr);
 
     ApiResponse::new(200, format!("{:?}", user))
 }
