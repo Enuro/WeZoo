@@ -1,40 +1,34 @@
-use actix_web::{get, web, HttpResponse, Responder};
-use actix_web_httpauth::extractors::bearer::BearerAuth;
-use sea_orm::EntityTrait;
+use actix_web::{get, HttpMessage, Responder, web, HttpResponse};
+use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
 use serde::Serialize;
 
-use crate::utils::{api_response, app_state, jwt};
+use crate::utils::{api_response::ApiResponse, app_state::AppState, jwt::Claims};
 
-#[derive(Serialize)]
-struct UserModel{
-    first_name: String,
-    last_name: String,
-    patronymic: String,
-    email: Option<String>,
-    phone: Option<String>,
-    data_reg: Option<String>,
-    data_birt: Option<String>,
-}
+// #[derive(Serialize)]
+// // struct User{
+// //     first_name: String,
+// //     last_name: String,
+// //     patronymic: String,
+// //     email: Option<String>,
+// //     phone: Option<String>,
+// // }
 
 #[get("/profile")]
-pub async fn profile(
-    app_state: web::Data<app_state::AppState>,
-    auth: BearerAuth,
+pub async fn profile(   
+    app_state: web::Data<AppState>,
+    req: actix_web::HttpRequest,
 ) -> impl Responder {
+    let extensions = req.extensions();
 
-    let token = auth.token();
-    let user_id = match  jwt::decode_jwt(token.to_string()) {
-        Ok(claims) => claims.claims.id,
-        Err(_) => return HttpResponse::Unauthorized().json("Invalid token")
-    };
+    let claims = extensions.get::<Claims>().expect("JWT middleware should set claims");
+    
+    let user = entity::user::Entity::find()
+        .filter(entity::user::Column::Id.eq(claims.user_id))
+        .one(&app_state.db)
+        .await
+        .unwrap();
 
-    let user = entity::user::Entity::find_by_id(user_id).one(app_state.get_ref()).await;
+        HttpResponse::Ok().json(user.clone());
 
-    match user {
-        Ok(Some(user)) => HttpResponse::Ok().json(user),
-        Ok(None) => HttpResponse::NotFound().json("User not found"),
-        Err(err) => HttpResponse::InternalServerError().json(err.to_string()),
-    }
-
-    // api_response::ApiResponse::new(200, "Verifyed user".to_string());
+    ApiResponse::new(200, format!("{:?}", user))
 }

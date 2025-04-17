@@ -136,8 +136,7 @@ pub async fn login(
                     .add(entity::user::Column::Password.eq(digest(password.clone())))
                 )
                 .one(&app_state.db)
-                .await
-                .unwrap();
+                .await.unwrap();
         } else {
             return api_response::ApiResponse::new(400, "Для входа по email необходимо указать пароль".to_string());
         }
@@ -159,8 +158,9 @@ pub async fn login(
     let user_data = user.unwrap();
     
     // Для создания токена используем email (если есть) или id
-    let identifier = user_data.email.clone().unwrap_or_else(|| user_data.id.to_string());
-    let token = encode_jwt(identifier, user_data.id).unwrap();
+    let email = user_data.email.clone().unwrap_or_else(|| user_data.id.to_string());
+    let phone = user_data.phone.clone().unwrap_or_else(|| user_data.id.to_string());
+    let token = encode_jwt(email, phone, user_data.id).unwrap();
     
     api_response::ApiResponse::new(200, serde_json::json!({
         "token": token

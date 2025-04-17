@@ -14,7 +14,9 @@ pub struct Model {
     pub email: Option<String>,
     #[serde(skip_serializing)]
     pub password: Option<String>,
-    pub data_reg: DateTimeWithTimeZone,
+    #[serde(skip_serializing)]
+    pub data_reg: Option<String>,
+    #[serde(skip_serializing)]
     pub data_birt: Option<String>,
     #[serde(skip_serializing)]
     pub role: Option<String>,

@@ -1,10 +1,8 @@
-use actix_web::{middleware::Logger, web, App, HttpServer, HttpResponse};
+use actix_web::{middleware::Logger, web, App, HttpServer, HttpResponse, http::header};
 use actix_cors::Cors;
 use sea_orm::{Database, DatabaseConnection};
 use utils::app_state::AppState;
 use migration::{Migrator, MigratorTrait};
-use actix_web::http::header;
-
 
 mod routes;
 mod utils;

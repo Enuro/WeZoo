@@ -16,10 +16,11 @@ pub struct Claims{
     pub exp: usize,
     pub iat: usize,
     pub email: String,
-    pub id: i32
+    pub phone: String,
+    pub user_id: i32
 }
 
-pub fn encode_jwt(email: String, id: i32) -> Result<String, jsonwebtoken::errors::Error>{
+pub fn encode_jwt(email: String, phone: String, user_id: i32) -> Result<String, jsonwebtoken::errors::Error>{
     let now = Utc::now();
     let expire = Duration::hours(24);
 
@@ -27,7 +28,8 @@ pub fn encode_jwt(email: String, id: i32) -> Result<String, jsonwebtoken::errors
         exp: (now+expire).timestamp() as usize,
         iat: now.timestamp() as usize,
         email,
-        id,
+        phone,
+        user_id,
     };
 
     let secret = (*constants::SECRET).clone();
