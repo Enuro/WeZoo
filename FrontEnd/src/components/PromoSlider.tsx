@@ -231,7 +231,6 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
       </div>
     </div>
   );
-  
 };
 
 export default PromoSlider;
