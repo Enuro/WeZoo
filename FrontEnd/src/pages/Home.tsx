@@ -1,71 +1,14 @@
 import PromoSlider from '../components/PromoSlider';
 import ProductGrid from '../components/ProductGrid';
-import { Product } from '../types';
-
-// Используем существующие данные из вашего проекта
-const promoProducts: Product[] = [
-  {
-    id: 1,
-    name: "Vitamin C Complex",
-    price: 19.99,
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    discount: 20,
-    isPromo: true
-  },
-  {
-    id: 2,
-    name: "Omega-3 Fish Oil",
-    price: 24.99,
-    image: "https://avatars.mds.yandex.net/i?id=fde21b14355402df71ef0e644df3618de3622dc7-10455853-images-thumbs&n=13",
-    discount: 15,
-    isPromo: true
-  },
-  {
-    id: 3,
-    name: "Multivitamin Pack",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1471864190281-a93a3070b6de?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    discount: 25,
-    isPromo: true
-  },
-  {
-    id: 4,
-    name: "Probiotics",
-    price: 34.99,
-    image: "https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-    discount: 10,
-    isPromo: true
-  }
-];
-
-const regularProducts: Product[] = [
-  {
-    id: 5,
-    name: "Aspirin",
-    price: 9.99,
-    image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 6,
-    name: "Bandages",
-    price: 4.99,
-    image: "https://images.unsplash.com/photo-1583946099379-f9c9cb8bc030?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 7,
-    name: "First Aid Kit",
-    price: 29.99,
-    image: "https://images.unsplash.com/photo-1603398938378-e54eab446dde?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  },
-  {
-    id: 8,
-    name: "Pain Relief Gel",
-    price: 14.99,
-    image: "https://images.unsplash.com/photo-1584017911766-d451b3d0e843?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-  }
-];
+import { useProductStore } from '../store/productStore';
 
 function Home() {
+  // Получаем данные из хранилища
+  const { products, featuredProducts } = useProductStore();
+  
+  // Фильтруем продукты для разных секций
+  const regularProducts = products.filter(product => !product.isPromo);
+
   return (
     <div>
       {/* Hero Section */}
@@ -87,7 +30,7 @@ function Home() {
       </div>
 
       {/* Promo Products Slider */}
-      <PromoSlider products={promoProducts} />
+      <PromoSlider products={featuredProducts} />
 
       {/* Regular Products Grid */}
       <ProductGrid products={regularProducts} title="Популярные товары" />
