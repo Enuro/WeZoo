@@ -31,14 +31,14 @@ pub async fn profile(
     let user_data = user.unwrap();
 
     let usr = User{
-        first_name: user_data.clone().first_name.unwrap_or_default().to_string(),
-        last_name: user_data.clone().last_name.unwrap_or_default().to_string(),
-        patronymic: user_data.clone().patronymic.unwrap_or_default().to_string(),
-        email: user_data.clone().email.clone(),
-        phone: user_data.clone().phone.clone()
+        first_name: user_data.first_name.unwrap_or_default().to_string(),
+        last_name: user_data.last_name.unwrap_or_default().to_string(),
+        patronymic: user_data.patronymic.unwrap_or_default().to_string(),
+        email: user_data.email.clone(),
+        phone: user_data.phone.clone()
     };
 
     HttpResponse::Ok().json(usr);
 
-    ApiResponse::new(200, format!("Вы успешно зашли"))
+    ApiResponse::new(200, "Вы успешно зашли".to_string())
 }
