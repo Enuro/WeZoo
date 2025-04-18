@@ -37,8 +37,7 @@ pub async fn profile(
         email: user_data.email.clone(),
         phone: user_data.phone.clone()
     };
-
-    HttpResponse::Ok().json(usr);
-
-    ApiResponse::new(200, "Вы успешно зашли".to_string())
+    ApiResponse::new(200, "Вы успешно зашли".to_string());
+    
+    HttpResponse::Ok().json(usr)
 }
