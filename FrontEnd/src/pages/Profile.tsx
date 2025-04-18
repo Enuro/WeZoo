@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { authApi } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
-import { Edit2, Save, X, AlertCircle, CheckCircle, LogOut, Mail, Phone } from 'lucide-react';
+import { Edit2, Save, X, AlertCircle, CheckCircle, LogOut, Mail, Phone, Info } from 'lucide-react';
 // Импортируем функцию форматирования телефона
 import { formatPhone } from '../utils/validators';
 
@@ -26,8 +26,12 @@ function Profile() {
     lastName: '',
     patronymic: '',
     phone: '',
-    email: ''
+    email: '',
+    password: '' // Добавили поле для пароля
   });
+  
+  // Флаг для отображения поля пароля при добавлении email
+  const [showPasswordField, setShowPasswordField] = useState(false);
   
   // Режим редактирования/просмотра
   const [isEditMode, setIsEditMode] = useState(false);
@@ -67,7 +71,8 @@ function Profile() {
             lastName: response.data.last_name || '',
             patronymic: response.data.patronymic || '',
             phone: response.data.phone || '',
-            email: response.data.email || ''
+            email: response.data.email || '',
+            password: ''
           });
         } else {
           console.error('Некорректный формат данных профиля:', response.data);
@@ -75,11 +80,11 @@ function Profile() {
         }
       } else {
         console.error('Ошибка при загрузке профиля:', response.error);
-        setError('Не удалось загрузить данные профиля');
+        setError('Не удалось загрузить данные профиля: ' + (response.error || 'Неизвестная ошибка'));
       }
     } catch (err) {
       console.error('Error fetching profile:', err);
-      setError('Произошла ошибка при загрузке профиля');
+      setError('Сервер временно недоступен. Пожалуйста, попробуйте позже.');
     } finally {
       setLoading(false);
     }
@@ -92,6 +97,13 @@ function Profile() {
       ...prev,
       [name]: value
     }));
+    
+    // Если пользователь вводит email, но раньше его не было - показываем поле для пароля
+    if (name === 'email' && value && !userData?.email) {
+      setShowPasswordField(true);
+    } else if (name === 'email' && !value) {
+      setShowPasswordField(false);
+    }
   };
 
   // Обработчик включения/выключения режима редактирования
@@ -104,8 +116,10 @@ function Profile() {
           lastName: userData.last_name || '',
           patronymic: userData.patronymic || '',
           phone: userData.phone || '',
-          email: userData.email || ''
+          email: userData.email || '',
+          password: ''
         });
+        setShowPasswordField(false);
       }
     }
     setIsEditMode(!isEditMode);
@@ -119,14 +133,26 @@ function Profile() {
       setSaving(true);
       setError(null);
       
+      // Проверка на добавление email без пароля
+      if (showPasswordField && !formData.password) {
+        setError('Для добавления email необходимо указать пароль');
+        setSaving(false);
+        return;
+      }
+      
       // Подготавливаем данные для отправки
-      const updateData = {
+      const updateData: any = {
         first_name: formData.firstName,
         last_name: formData.lastName,
         patronymic: formData.patronymic,
         phone: formData.phone,
         email: formData.email
       };
+      
+      // Добавляем пароль только если он указан
+      if (formData.password) {
+        updateData.password = formData.password;
+      }
       
       // Пытаемся отправить запрос на обновление профиля
       try {
@@ -137,6 +163,7 @@ function Profile() {
           setUserData(response.data as UserProfile);
           setSaveSuccess(true);
           setIsEditMode(false);
+          setShowPasswordField(false);
           
           // Скрываем сообщение об успехе через 3 секунды
           setTimeout(() => {
@@ -147,7 +174,6 @@ function Profile() {
         }
       } catch (apiError) {
         // Если произошла ошибка при вызове API, мы можем имитировать обновление локально
-        // ТОЛЬКО ДЛЯ ДЕМОНСТРАЦИИ, в реальном приложении вы бы показали ошибку
         console.warn('API error, using local update as fallback:', apiError);
         
         if (userData) {
@@ -163,6 +189,7 @@ function Profile() {
           setUserData(updatedUserData);
           setSaveSuccess(true);
           setIsEditMode(false);
+          setShowPasswordField(false);
           
           setTimeout(() => {
             setSaveSuccess(false);
@@ -375,6 +402,32 @@ function Profile() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
               />
             </div>
+            
+            {showPasswordField && (
+              <div>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                    Пароль для входа по Email
+                  </label>
+                  <div className="flex items-center text-xs text-blue-600">
+                    <Info className="w-3 h-3 mr-1" />
+                    <span>Необходим для входа по Email</span>
+                  </div>
+                </div>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder="Минимум 6 символов"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-emerald-500 focus:border-emerald-500"
+                />
+                <p className="mt-1 text-xs text-gray-500">
+                  Пароль должен содержать не менее 6 символов, включая буквы и цифры.
+                </p>
+              </div>
+            )}
           </div>
         </div>
 
