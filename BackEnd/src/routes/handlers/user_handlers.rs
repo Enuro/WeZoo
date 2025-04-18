@@ -28,15 +28,17 @@ pub async fn profile(
         .await
         .unwrap();
 
+    let user_data = user.unwrap();
+
     let usr = User{
-        first_name: user.clone().unwrap().first_name.expect("REASON").to_string(),
-        last_name: user.clone().unwrap().last_name.expect("REASON").to_string(),
-        patronymic: user.clone().unwrap().patronymic.expect("REASON").to_string(),
-        email: Some(user.clone().unwrap().email.expect("REASON")),
-        phone: Some(user.clone().unwrap().phone.expect("REASON"))
+        first_name: user_data.clone().first_name.unwrap_or_default().to_string(),
+        last_name: user_data.clone().last_name.unwrap_or_default().to_string(),
+        patronymic: user_data.clone().patronymic.unwrap_or_default().to_string(),
+        email: user_data.clone().email.clone(),
+        phone: user_data.clone().phone.clone()
     };
 
     HttpResponse::Ok().json(usr);
 
-    ApiResponse::new(200, format!("{:?}", user))
+    ApiResponse::new(200, format!("{:?}", user_data))
 }
