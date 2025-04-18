@@ -40,5 +40,5 @@ pub async fn profile(
 
     HttpResponse::Ok().json(usr);
 
-    ApiResponse::new(200, format!("{:?}", user_data))
+    ApiResponse::new(200, format!("Вы успешно зашли"))
 }
