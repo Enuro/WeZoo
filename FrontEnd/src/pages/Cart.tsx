@@ -1,4 +1,3 @@
-import React from 'react';
 import { Trash2 } from 'lucide-react';
 import { useProductStore } from '../store/productStore';
 import { useNavigate } from 'react-router-dom';
@@ -38,7 +37,7 @@ function Cart() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Корзина</h1>
       
       <div className="space-y-4">
@@ -49,11 +48,11 @@ function Cart() {
             : item.price;
           
           return (
-            <div key={item.id} className="flex items-center gap-4 p-4 border border-gray-200 rounded-lg">
+            <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-4 p-4 border border-gray-200 rounded-lg">
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-24 h-24 object-cover rounded-md cursor-pointer"
+                className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-md cursor-pointer"
                 onClick={() => navigate(`/product/${item.id}`)}
               />
               
@@ -74,18 +73,18 @@ function Cart() {
                 </div>
               </div>
               
-              <div className="flex items-center gap-4">
+              <div className="flex flex-row sm:flex-row items-center gap-4 w-full sm:w-auto justify-between sm:justify-end mt-2 sm:mt-0">
                 <div className="flex items-center border border-gray-300 rounded-md">
                   <button 
-                    className="px-3 py-1 hover:bg-gray-100"
+                    className="px-2 sm:px-3 py-1 hover:bg-gray-100"
                     onClick={() => updateCartItemQuantity(item.id, item.quantity - 1)}
                     disabled={item.quantity <= 1}
                   >
                     -
                   </button>
-                  <span className="px-4 py-1 border-x border-gray-300">{item.quantity}</span>
+                  <span className="px-2 sm:px-4 py-1 border-x border-gray-300">{item.quantity}</span>
                   <button 
-                    className="px-3 py-1 hover:bg-gray-100"
+                    className="px-2 sm:px-3 py-1 hover:bg-gray-100"
                     onClick={() => updateCartItemQuantity(item.id, item.quantity + 1)}
                   >
                     +
@@ -95,6 +94,7 @@ function Cart() {
                 <button 
                   className="p-2 text-gray-500 hover:text-red-500"
                   onClick={() => removeFromCart(item.id)}
+                  aria-label="Удалить товар"
                 >
                   <Trash2 className="w-5 h-5" />
                 </button>
