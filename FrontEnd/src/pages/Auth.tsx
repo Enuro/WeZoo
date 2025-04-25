@@ -5,7 +5,7 @@ import { validateEmail, validatePhone, validatePassword, validateName, formatPho
 
 function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('email');
+  const [authMethod, setAuthMethod] = useState<'email' | 'phone'>('phone'); // Изменено на 'phone' по умолчанию
   
   // Поля для входа
   const [email, setEmail] = useState('');
@@ -210,16 +210,6 @@ function Auth() {
       <div className="flex mb-6 border-b border-gray-200">
         <button
           className={`flex-1 py-2 px-4 text-center ${
-            authMethod === 'email' 
-              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
-          onClick={() => handleAuthMethodChange('email')}
-        >
-          По Email
-        </button>
-        <button
-          className={`flex-1 py-2 px-4 text-center ${
             authMethod === 'phone' 
               ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
               : 'text-gray-500 hover:text-gray-700'
@@ -227,6 +217,16 @@ function Auth() {
           onClick={() => handleAuthMethodChange('phone')}
         >
           По телефону
+        </button>
+        <button
+          className={`flex-1 py-2 px-4 text-center ${
+            authMethod === 'email' 
+              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+          onClick={() => handleAuthMethodChange('email')}
+        >
+          По Email
         </button>
       </div>
       
