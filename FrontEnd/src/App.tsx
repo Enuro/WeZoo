@@ -5,7 +5,8 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 import Auth from './pages/Auth';
-import ProductDetail from './pages/ProductDetail'; // Импортируем компонент
+import ProductDetail from './pages/ProductDetail';
+import Catalog from './pages/Catalog'; // Импортируем новую страницу каталога
 import { useAuthStore } from './store/authStore';
 
 function PrivateRoute({ children }: { children: React.ReactNode }) {
@@ -53,8 +54,13 @@ function App() {
               } 
             />
             <Route path="/cart" element={<Cart />} />
-            {/* Добавляем новый маршрут для страницы товара */}
             <Route path="/product/:id" element={<ProductDetail />} />
+            {/* Добавляем новые маршруты для каталога */}
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/catalog/:categoryId" element={<Catalog />} />
+            <Route path="/promotions" element={<Catalog />} /> {/* Временно используем Catalog */}
+            <Route path="/delivery" element={<Home />} /> {/* Временно используем Home */}
+            <Route path="/contacts" element={<Home />} /> {/* Временно используем Home */}
           </Routes>
         </main>
         <Footer />
