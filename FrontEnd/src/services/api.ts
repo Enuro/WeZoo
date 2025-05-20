@@ -1,4 +1,4 @@
-const API_URL = 'http://0.0.0.0:8080'; // URL вашего API
+const API_URL = 'http://localhost:80'; // URL вашего API
 
 interface LoginData {
   email?: string;

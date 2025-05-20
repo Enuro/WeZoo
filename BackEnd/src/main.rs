@@ -1,4 +1,4 @@
-use actix_web::{middleware::Logger, web, App, HttpServer, HttpResponse, http::header};
+use actix_web::{middleware::Logger, web, App, HttpServer, http::header};
 use actix_cors::Cors;
 use sea_orm::{Database, DatabaseConnection};
 use utils::app_state::AppState;
@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         let cors = Cors::default()
-            .allowed_origin("http://localhost:5173") // URL вашего React-приложения
+            .allowed_origin("http://localhost:80") // URL вашего React-приложения
             .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
             .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT, header::CONTENT_TYPE])
             .max_age(3600);

@@ -11,11 +11,6 @@ RUN apt-get update && \
 # Копируем всё содержимое проекта включая подмодули
 COPY . .
 
-# Проверяем структуру проекта
-RUN ls -la && \
-    ls -la entity && \
-    ls -la migration
-
 # Собираем с реальными исходными файлами
 RUN cargo build --release
 

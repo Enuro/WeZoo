@@ -17,6 +17,7 @@ services:
       - app-network
 
   backend:
+    image: enurovi/wezoo:backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -28,13 +29,14 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:password@postgres:5432/postgres?currentSchema=public
       SECRET: 8zvAZrDR3RLN7z7v5rJu4Ie71i929ftK
-      ADDRESS: 0.0.0.0
+      ADDRESS: backend
       PORT: 8080
     restart: unless-stopped
     networks:
       - app-network
 
   frontend:
+    image: enurovi/wezoo:frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
