@@ -26,7 +26,7 @@ async fn main() -> std::io::Result<()> {
 
     HttpServer::new(move || {
         let cors = Cors::default()
-            .allowed_origin("https://wezoomag.ru") // URL вашего React-приложения
+            .allowed_origin("https://wezoomag.ru:80") // URL вашего React-приложения
             .allowed_methods(vec!["GET", "POST", "PUT", "DELETE"])
             .allowed_headers(vec![header::AUTHORIZATION, header::ACCEPT, header::CONTENT_TYPE])
             .max_age(3600);
