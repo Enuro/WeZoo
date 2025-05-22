@@ -17,7 +17,7 @@ services:
       - app-network
 
   backend:
-    image: enurovi/wezoo:backend
+    # image: enurovi/wezoo:backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -36,7 +36,7 @@ services:
       - app-network
 
   frontend:
-    image: enurovi/wezoo:frontend
+    # image: enurovi/wezoo:frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
