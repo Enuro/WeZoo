@@ -1,4 +1,4 @@
-const API_URL = 'http://host:80'; // URL вашего API
+const API_URL = 'https://www.wezoomag.ru'; // URL вашего API
 
 interface LoginData {
   email?: string;
