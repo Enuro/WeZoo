@@ -187,7 +187,7 @@ const AccordionFilters: React.FC<AccordionFiltersProps> = ({ onFilterChange, isM
 
   return (
     <div className="bg-white rounded-md border border-gray-200 mt-16">
-      <div className="text-lg font-medium p-4 border-b border-gray-200">
+      <div className="text-lg font-medium font-bezier p-4 border-b border-gray-200">
         Фильтры
       </div>
       {filterGroups.map((group) => (
@@ -196,7 +196,7 @@ const AccordionFilters: React.FC<AccordionFiltersProps> = ({ onFilterChange, isM
             className="flex justify-between items-center w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors"
             onClick={() => toggleGroup(group.id)}
           >
-            <span className="font-medium text-gray-800">{group.title}</span>
+            <span className="font-medium font-bezier text-gray-800">{group.title}</span>
             {expandedGroups.includes(group.id) 
               ? <ChevronUp className="w-5 h-5 text-gray-500" />
               : <ChevronDown className="w-5 h-5 text-gray-500" />

@@ -137,7 +137,7 @@ const CatalogMenu: React.FC<CatalogMenuProps> = ({ isOpen, onClose }) => {
               <div className="hidden md:grid md:grid-cols-5 gap-6">
                 {categories.map((category) => (
                   <div key={category.id} className="space-y-4">
-                    <h3 className="text-lg font-medium text-gray-800">{category.name}</h3>
+                    <h3 className="text-lg font-medium font-bezier text-gray-800">{category.name}</h3>
                     <ul className="space-y-2">
                       {category.subCategories.map((sub) => (
                         <li key={sub.id}>

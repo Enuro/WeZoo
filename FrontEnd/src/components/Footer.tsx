@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
+import logo from '../assets/logo1.png';
 
 const Footer = () => {
   return (
@@ -6,7 +7,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">Наша Аптека</h3>
+            <img src={logo} alt="WeZoo логотип" className="h-8 w-auto mb-4" />
             <p className="text-gray-300 mb-4">Ваш надежный партнер в сфере здравоохранения.</p>
             <div className="flex space-x-4">
               <a 
@@ -41,7 +42,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold mb-4">Быстрые ссылки</h4>
+            <h4 className="text-lg font-semibold font-bezier mb-4">Быстрые ссылки</h4>
             <ul className="space-y-2">
               <li><a href="#" className="text-gray-300 hover:text-white">О нас</a></li>
               <li><a href="#" className="text-gray-300 hover:text-white">Товары</a></li>
@@ -51,7 +52,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold mb-4">Контактная информация</h4>
+            <h4 className="text-lg font-semibold font-bezier mb-4">Контактная информация</h4>
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Phone className="w-4 h-4 mr-2" />
@@ -69,7 +70,7 @@ const Footer = () => {
           </div>
           
           <div>
-            <h4 className="text-lg font-semibold mb-4">Режим работы</h4>
+            <h4 className="text-lg font-semibold font-bezier mb-4">Режим работы</h4>
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Clock className="w-4 h-4 mr-2" />
@@ -84,7 +85,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-8 pt-8 text-center">
-          <p className="text-gray-300">&copy; 2024 Наша Аптека. Все права защищены.</p>
+          <p className="text-gray-300">&copy; 2024 WeZoo. Все права защищены.</p>
         </div>
       </div>
     </footer>

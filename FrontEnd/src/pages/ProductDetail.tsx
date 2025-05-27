@@ -105,10 +105,10 @@ const ProductDetail: React.FC = () => {
 
         {/* Детали товара */}
         <div className="space-y-6">
-          <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
+          <h1 className="text-3xl font-bold font-bezier text-gray-800">{product.name}</h1>
           
           <div className="flex items-end gap-3">
-            <span className="text-3xl font-bold text-emerald-600">
+            <span className="text-3xl font-bold font-bezier text-emerald-600">
               {formatPrice(finalPrice)}
             </span>
             {product.discount && (
@@ -171,20 +171,20 @@ const ProductDetail: React.FC = () => {
       {/* Детальная информация о товаре */}
       {productDetails && (
         <div className="mt-12 border-t border-gray-200 pt-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">Информация о товаре</h2>
+          <h2 className="text-2xl font-bold font-bezier text-gray-800 mb-6">Информация о товаре</h2>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Производитель</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Производитель</h3>
                 <p className="text-gray-600">{productDetails.manufacturer}</p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Страна</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Страна</h3>
                 <p className="text-gray-600">{productDetails.country}</p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Активные компоненты</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Активные компоненты</h3>
                 <ul className="list-disc pl-5 text-gray-600">
                   {productDetails.activeIngredients.map((ingredient, index) => (
                     <li key={index}>{ingredient}</li>
@@ -192,7 +192,7 @@ const ProductDetail: React.FC = () => {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Показания к применению</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Показания к применению</h3>
                 <ul className="list-disc pl-5 text-gray-600">
                   {productDetails.indications.map((indication, index) => (
                     <li key={index}>{indication}</li>
@@ -203,7 +203,7 @@ const ProductDetail: React.FC = () => {
             
             <div className="space-y-4">
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Противопоказания</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Противопоказания</h3>
                 <ul className="list-disc pl-5 text-gray-600">
                   {productDetails.contraindications.map((contraindication, index) => (
                     <li key={index}>{contraindication}</li>
@@ -211,15 +211,15 @@ const ProductDetail: React.FC = () => {
                 </ul>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Способ применения</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Способ применения</h3>
                 <p className="text-gray-600">{productDetails.howToUse}</p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Условия хранения</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Условия хранения</h3>
                 <p className="text-gray-600">{productDetails.storageConditions}</p>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-700 mb-2">Срок годности</h3>
+                <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-2">Срок годности</h3>
                 <p className="text-gray-600">{productDetails.expirationDate}</p>
               </div>
             </div>

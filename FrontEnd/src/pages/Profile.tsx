@@ -243,7 +243,7 @@ function Profile() {
       <div className="space-y-6">
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-800">Персональные данные</h2>
+            <h2 className="text-lg font-semibold font-bezier text-gray-800">Персональные данные</h2>
             <button 
               onClick={toggleEditMode}
               className="flex items-center text-emerald-600 hover:text-emerald-700"
@@ -256,15 +256,15 @@ function Profile() {
           <div className="space-y-4">
             <div>
               <p className="text-sm text-gray-500 mb-1">Фамилия</p>
-              <p className="font-medium">{userData.last_name || '—'}</p>
+              <p className="font-medium font-bezier">{userData.last_name || '—'}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Имя</p>
-              <p className="font-medium">{userData.first_name || '—'}</p>
+              <p className="font-medium font-bezier">{userData.first_name || '—'}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Отчество</p>
-              <p className="font-medium">{userData.patronymic || '—'}</p>
+              <p className="font-medium font-bezier">{userData.patronymic || '—'}</p>
             </div>
           </div>
         </div>
@@ -314,7 +314,7 @@ function Profile() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-gray-50 rounded-lg p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-lg font-semibold text-gray-800">Персональные данные</h2>
+            <h2 className="text-lg font-semibold font-bezier text-gray-800">Персональные данные</h2>
             <button 
               type="button"
               onClick={toggleEditMode}
@@ -454,7 +454,7 @@ function Profile() {
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-8">Личный кабинет</h1>
+      <h1 className="text-2xl font-bold font-bezier text-gray-800 mb-8">Личный кабинет</h1>
       
       {error && (
         <div className="flex items-center bg-red-100 text-red-700 p-3 mb-4 rounded-md">

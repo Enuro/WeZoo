@@ -176,7 +176,7 @@ const PromoSlider: React.FC<PromoSliderProps> = ({ products }) => {
   return (
     <div className="w-full py-8">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">Акции дня</h2>
+        <h2 className="text-2xl font-bold font-bezier text-gray-800">Акции дня</h2>
         <div className="flex space-x-2">
           <button 
             onClick={handlePrev}

@@ -22,7 +22,7 @@ function Home() {
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/80 to-transparent flex items-center">
           <div className="max-w-lg ml-12 text-white">
-            <h1 className="text-4xl font-bold mb-4">Ваше здоровье - наш приоритет</h1>
+            <h1 className="text-4xl font-bold font-bezier mb-4">Ваше здоровье - наш приоритет</h1>
             <p className="text-lg mb-6">Откройте для себя широкий ассортимент товаров для здоровья питомцев и профессиональных услуг.</p>
             <button className="bg-white text-emerald-600 px-6 py-2 rounded-full font-semibold hover:bg-emerald-50 transition-colors">
               Купить сейчас
@@ -39,7 +39,7 @@ function Home() {
       
       {/* Новинки */}
       <div className="py-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Новинки</h2>
+        <h2 className="text-2xl font-bold font-bezier text-gray-800 mb-6">Новинки</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {regularProducts.slice(0, 4).map((product) => (
             <ProductCard key={product.id} product={product} />
@@ -50,15 +50,15 @@ function Home() {
       {/* Информационные блоки */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 my-12">
         <div className="bg-emerald-50 rounded-lg p-6">
-          <div className="text-emerald-600 text-xl font-semibold mb-3">Доставка в день заказа</div>
+          <div className="text-emerald-600 text-xl font-semibold font-bezier mb-3">Доставка в день заказа</div>
           <p className="text-gray-600">Заказывайте до 18:00 и получайте лекарства для вашего питомца в тот же день</p>
         </div>
         <div className="bg-emerald-50 rounded-lg p-6">
-          <div className="text-emerald-600 text-xl font-semibold mb-3">Консультация ветеринара</div>
+          <div className="text-emerald-600 text-xl font-semibold font-bezier mb-3">Консультация ветеринара</div>
           <p className="text-gray-600">Получите профессиональный совет по выбору препаратов для вашего питомца</p>
         </div>
         <div className="bg-emerald-50 rounded-lg p-6">
-          <div className="text-emerald-600 text-xl font-semibold mb-3">Гарантия качества</div>
+          <div className="text-emerald-600 text-xl font-semibold font-bezier mb-3">Гарантия качества</div>
           <p className="text-gray-600">Все товары сертифицированы и хранятся в соответствии с требованиями</p>
         </div>
       </div>

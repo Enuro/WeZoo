@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import CatalogMenu from './CatalogMenu';
+import logo from '../assets/logo.png';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -15,7 +16,6 @@ const Header = () => {
   const location = useLocation();
   const { isAuthenticated } = useAuthStore();
 
-  // Закрываем меню при изменении маршрута (когда человек кликает на ссылку)
   useEffect(() => {
     setIsMenuOpen(false);
     setIsCatalogOpen(false);
@@ -42,8 +42,6 @@ const Header = () => {
 
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
-      // Закрываем меню и поиск при прокрутке
       if (window.scrollY > 100) {
         setIsMenuOpen(false);
         setIsSearchOpen(false);
@@ -61,20 +59,16 @@ const Header = () => {
     } else {
       navigate('/profile');
     }
-    // Закрываем меню при клике на иконку профиля
     setIsMenuOpen(false);
   };
 
-  // Обработчик клика для навигации с закрытием меню
   const handleNavigation = (path: string) => {
     navigate(path);
     setIsMenuOpen(false);
   };
 
-  // Обработчик клика на кнопку каталога
   const handleCatalogToggle = () => {
     setIsCatalogOpen(!isCatalogOpen);
-    // Закрываем мобильное меню если открыто
     if (isMenuOpen) {
       setIsMenuOpen(false);
     }
@@ -84,33 +78,29 @@ const Header = () => {
     <>
       <header className={`fixed w-full z-50 transition-all duration-300 ${
         isScrolled ? 'bg-white shadow-md' : 'bg-white shadow-sm'
-      }`}>
+      } font-gothampro`}> {/* применяем шрифт для всего сайта */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <Link to="/" className="text-2xl font-bold text-emerald-600">
-                Наша Аптека
+              <Link to="/" className="flex items-center">
+                <img src={logo} alt="WeZoo логотип" className="h-8 sm:h-10 w-auto" />
               </Link>
-              
-              {/* Геолокация возвращена на прежнее место */}
               <div className="hidden md:flex items-center text-gray-600">
                 <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
                 <span className="truncate max-w-[120px]">{city}</span>
               </div>
             </div>
 
-            {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-5">
-              {/* Кнопка Каталог - возвращена в навигационный ряд */}
               <button 
                 className={`flex items-center px-5 py-2 rounded-full border border-emerald-600 transition-colors ${
                   isCatalogOpen 
                     ? 'bg-emerald-600 text-white' 
                     : 'bg-white text-emerald-600 hover:bg-emerald-50'
-                }`}
+                } font-bold font-bezier`}
                 onClick={handleCatalogToggle}
               >
-                <span className="mr-1 font-medium">Каталог</span>
+                <span className="mr-1 font-medium font-bezier">Каталог</span>
                 <ChevronDown className={`w-4 h-4 transition-transform ${isCatalogOpen ? 'transform rotate-180' : ''}`} />
               </button>
               <Link to="/promotions" className="text-gray-600 hover:text-emerald-600 px-3 py-1 rounded-full hover:bg-emerald-50">Акции</Link>
@@ -118,7 +108,6 @@ const Header = () => {
               <Link to="/contacts" className="text-gray-600 hover:text-emerald-600 px-3 py-1 rounded-full hover:bg-emerald-50">Контакты</Link>
             </nav>
 
-            {/* Desktop Icons */}
             <div className="hidden md:flex items-center space-x-5">
               <AnimatePresence>
                 {isSearchOpen && (
@@ -167,7 +156,6 @@ const Header = () => {
               </button>
             </div>
 
-            {/* Мобильная кнопка каталога */}
             <button
               className="md:hidden inline-flex items-center px-4 py-1.5 rounded-full border border-emerald-600 bg-white text-emerald-600"
               onClick={handleCatalogToggle}
@@ -176,7 +164,6 @@ const Header = () => {
               <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${isCatalogOpen ? 'transform rotate-180' : ''}`} />
             </button>
 
-            {/* Mobile Menu Button */}
             <button
               className="md:hidden text-gray-600 p-2"
               onClick={() => {
@@ -190,7 +177,6 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
@@ -262,8 +248,7 @@ const Header = () => {
           )}
         </AnimatePresence>
       </header>
-      
-      {/* Выпадающее меню каталога */}
+
       <CatalogMenu 
         isOpen={isCatalogOpen} 
         onClose={() => setIsCatalogOpen(false)}

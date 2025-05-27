@@ -39,3 +39,22 @@
   outline: none;
   box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
+
+@font-face {
+  font-family: 'gothampro';
+  src: url('/src/assets/fonts/gothampro_regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'bezier';
+  src: url('/src/assets/fonts/bezier_bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+body {
+  font-family: 'gothampro', sans-serif;
+}
+

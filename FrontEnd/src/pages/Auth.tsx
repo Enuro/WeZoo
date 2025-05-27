@@ -196,7 +196,7 @@ function Auth() {
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
+      <h1 className="text-2xl font-bold font-bezier text-gray-800 mb-6">
         {isLogin ? 'Вход' : 'Регистрация'}
       </h1>
       
@@ -211,7 +211,7 @@ function Auth() {
         <button
           className={`flex-1 py-2 px-4 text-center ${
             authMethod === 'phone' 
-              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
+              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium font-bezier'  
               : 'text-gray-500 hover:text-gray-700'
           }`}
           onClick={() => handleAuthMethodChange('phone')}
@@ -221,7 +221,7 @@ function Auth() {
         <button
           className={`flex-1 py-2 px-4 text-center ${
             authMethod === 'email' 
-              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium' 
+              ? 'text-emerald-600 border-b-2 border-emerald-600 font-medium font-bezier'  
               : 'text-gray-500 hover:text-gray-700'
           }`}
           onClick={() => handleAuthMethodChange('email')}

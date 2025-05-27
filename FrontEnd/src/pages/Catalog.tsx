@@ -87,7 +87,7 @@ function Catalog() {
 
   return (
     <div className="py-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Каталог товаров</h1>
+      <h1 className="text-2xl font-bold font-bezier text-gray-800 mb-6">Каталог товаров</h1>
 
       {/* Фильтры и сортировка для мобильных */}
       <div className="flex mb-4 md:hidden">
@@ -123,7 +123,7 @@ function Catalog() {
         <div className="flex-grow">
           {/* Верхняя панель с количеством товаров, сортировкой и переключением вида */}
           <div className="flex justify-between items-center mb-6 bg-gray-50 p-3 rounded-lg">
-            <div className="px-4 py-1 bg-white border border-emerald-100 text-emerald-700 rounded-full text-sm font-medium">
+            <div className="px-4 py-1 bg-white border border-emerald-100 text-emerald-700 rounded-full text-sm font-medium font-bezier">
               Найдено: {sortedProducts.length} товаров
             </div>
             

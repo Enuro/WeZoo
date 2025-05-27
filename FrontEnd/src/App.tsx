@@ -32,7 +32,7 @@ function PublicRoute({ children }: { children: React.ReactNode }) {
 function App() {
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-gray-50">
+      <div className="min-h-screen flex flex-col bg-gray-50 font-gothampro">
         <Header />
         <main className="flex-grow container mx-auto px-4 pt-24 pb-8">
           <Routes>

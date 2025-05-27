@@ -80,12 +80,12 @@ const CategoryFilters: React.FC<CategoryFiltersProps> = ({
     <div className="py-8">
       <div className="overflow-hidden">
         {showTitle && (
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">{title}</h2>
+          <h2 className="text-2xl font-bold font-bezier text-gray-800 mb-6">{title}</h2>
         )}
         
         {/* Фильтр по типу животного */}
         <div className="mb-8">
-          <h3 className="text-lg font-semibold text-gray-700 mb-4">Выберите питомца</h3>
+          <h3 className="text-lg font-semibold font-bezier text-gray-700 mb-4">Выберите питомца</h3>
           <div className="flex flex-wrap gap-3">
             {petTypes.map((pet) => (
               <button

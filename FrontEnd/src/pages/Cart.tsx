@@ -22,7 +22,7 @@ function Cart() {
   if (cartItems.length === 0) {
     return (
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8 text-center">
-        <h1 className="text-2xl font-bold text-gray-800 mb-6">Корзина</h1>
+        <h1 className="text-2xl font-bold font-bezier text-gray-800 mb-6">Корзина</h1>
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg mb-6">Ваша корзина пуста</p>
           <button 
@@ -38,7 +38,7 @@ function Cart() {
 
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Корзина</h1>
+      <h1 className="text-2xl font-bold font-bezier text-gray-800 mb-6">Корзина</h1>
       
       <div className="space-y-4">
         {cartItems.map((item) => {
@@ -57,8 +57,7 @@ function Cart() {
               />
               
               <div className="flex-grow">
-                <h3 
-                  className="text-lg font-semibold text-gray-800 cursor-pointer hover:text-emerald-600"
+                <h3 className="text-lg font-semibold font-bezier text-gray-800 cursor-pointer hover:text-emerald-600"
                   onClick={() => navigate(`/product/${item.id}`)}
                 >
                   {item.name}
@@ -106,7 +105,7 @@ function Cart() {
 
       <div className="mt-8 border-t border-gray-200 pt-4">
         <div className="flex justify-between items-center mb-4">
-          <span className="text-lg font-semibold">Итого:</span>
+          <span className="text-lg font-semibold font-bezier">Итого:</span>
           <span className="text-2xl font-bold text-emerald-600">{formatPrice(total)}</span>
         </div>
         

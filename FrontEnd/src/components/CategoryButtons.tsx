@@ -68,7 +68,7 @@ const CategoryButtons: React.FC = () => {
             <div className={`${category.color} w-16 h-16 rounded-full flex items-center justify-center text-white mb-2 hover:scale-110 transition-transform`}>
               {category.icon}
             </div>
-            <span className="text-gray-700 text-sm font-medium">{category.name}</span>
+            <span className="text-gray-700 text-sm font-medium font-bezier">{category.name}</span>
           </Link>
         ))}
       </div>

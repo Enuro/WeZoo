@@ -5,4 +5,15 @@ export default {
     extend: {},
   },
   plugins: [],
+
+ theme: {
+  extend: {
+    fontFamily: {
+      gothampro: ['gothampro', 'sans-serif'],
+      bezier: ['bezier', 'sans-serif'],
+    },
+  },
+}
+
+
 };

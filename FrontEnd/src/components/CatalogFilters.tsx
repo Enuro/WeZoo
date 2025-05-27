@@ -209,7 +209,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
     return (
       <div className="fixed inset-0 z-50 bg-white flex flex-col">
         <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200">
-          <h2 className="text-lg font-semibold">Фильтры</h2>
+          <h2 className="text-lg font-semibold font-bezier">Фильтры</h2>
           <button 
             onClick={onCloseMobile}
             className="p-2 text-gray-500"
@@ -250,7 +250,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
                   className="flex justify-between items-center w-full py-2"
                   onClick={() => toggleGroup(group.id)}
                 >
-                  <span className="font-medium">{group.title}</span>
+                  <span className="font-medium font-bezier">{group.title}</span>
                   {expandedGroups.includes(group.id) ? 
                     <ChevronUp className="w-5 h-5 text-gray-500" /> : 
                     <ChevronDown className="w-5 h-5 text-gray-500" />
@@ -346,7 +346,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
   return (
     <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
       <div className="flex justify-between items-center mb-5">
-        <h2 className="text-lg font-semibold">Фильтры</h2>
+        <h2 className="text-lg font-semibold font-bezier">Фильтры</h2>
         {hasActiveFilters && (
           <button
             onClick={resetFilters}
@@ -380,7 +380,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
       {/* Выбранные фильтры */}
       {hasActiveFilters && (
         <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Выбранные фильтры:</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-2 font-bezier">Выбранные фильтры:</h3>
           <div className="flex flex-wrap gap-2">
             {Object.entries(selectedFilters).map(([groupId, optionIds]) => (
               optionIds.map(optionId => (
@@ -416,7 +416,7 @@ const CatalogFilters: React.FC<CatalogFiltersProps> = ({
               className="flex justify-between items-center w-full mb-3"
               onClick={() => toggleGroup(group.id)}
             >
-              <span className="font-medium">{group.title}</span>
+              <span className="font-medium font-bezier">{group.title}</span>
               {expandedGroups.includes(group.id) ? 
                 <ChevronUp className="w-5 h-5 text-gray-500" /> : 
                 <ChevronDown className="w-5 h-5 text-gray-500" />
