@@ -1,4 +1,4 @@
-use actix_web::{get, web, Responder};
+use actix_web::{get, Responder};
 
 use crate::utils::api_response::ApiResponse;
 

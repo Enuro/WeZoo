@@ -6,6 +6,7 @@ use migration::{Migrator, MigratorTrait};
 
 mod routes;
 mod utils;
+mod service;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

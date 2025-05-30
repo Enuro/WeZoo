@@ -22,7 +22,7 @@ impl ApiResponse{
 impl Responder for ApiResponse{
     type Body = BoxBody;
 
-    fn respond_to(self, req: &actix_web::HttpRequest) -> HttpResponse<Self::Body> {
+    fn respond_to(self, _req: &actix_web::HttpRequest) -> HttpResponse<Self::Body> {
         let body = BoxBody::new(web::BytesMut::from(self.body.as_bytes()));
         HttpResponse::new(self.response_code).set_body(body)
     }

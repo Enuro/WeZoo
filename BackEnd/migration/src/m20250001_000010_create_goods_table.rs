@@ -1,4 +1,4 @@
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*};
 
 use crate::m20250001_000002_create_goods_classes_table::GoodsClasses;
 use crate::m20250001_000009_create_producers_table::Producers;

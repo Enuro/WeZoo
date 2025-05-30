@@ -16,30 +16,14 @@ use sea_orm::{
     ModelTrait, 
     QueryFilter
 };
-use serde::{Deserialize, Serialize};
 use sha256::digest;
 
-use crate::utils::{api_response::ApiResponse, app_state::AppState, jwt::Claims};
-
-#[derive(Serialize, Default)]
-struct User{
-    first_name: String,
-    last_name: String,
-    patronymic: String,
-    email: Option<String>,
-    phone: Option<String>,
-}
-
-#[derive(Serialize, Deserialize)]
-struct UpdateModel{
-    first_name: Option<String>,
-    last_name: Option<String>,
-    patronymic: Option<String>,
-    phone: Option<String>,
-    email: Option<String>,
-    password: Option<String>,
-    data_birt: Option<String>,
-}
+use crate::utils::{
+    api_response::ApiResponse, 
+    app_state::AppState, 
+    jwt::Claims, 
+    model::{User, UpdateModel}
+};
 
 #[get("/profile")]
 pub async fn profile(   
@@ -65,7 +49,6 @@ pub async fn profile(
         email: user_data.email.clone(),
         phone: user_data.phone.clone()
     };
-    // ApiResponse::new(200, "Вы успешно зашли".to_string());
     
     HttpResponse::Ok().json(usr)
 }

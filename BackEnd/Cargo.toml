@@ -32,6 +32,8 @@ redis = { version = "0.22", features = ["tokio-comp"] }
 reqwest = { version = "0.11", features = ["json"] }
 rand = "0.8"
 futures = "0.3.31"
+postmark = {version = "0.11.3", features = ["reqwest"]}
+twilio = "1.1.0"
 
 [dev-dependencies]
 actix-rt = "2.9"

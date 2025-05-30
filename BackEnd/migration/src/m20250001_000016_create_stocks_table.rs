@@ -1,4 +1,4 @@
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*};
 
 use crate::m20250001_000010_create_goods_table::Goods;
 use crate::m20250001_000006_create_cliniks_table::Cliniks;

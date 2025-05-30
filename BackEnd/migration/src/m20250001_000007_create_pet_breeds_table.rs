@@ -1,4 +1,4 @@
-use sea_orm_migration::{prelude::*, schema::*};
+use sea_orm_migration::{prelude::*};
 
 use crate::m20250001_000008_create_pets_table::Pets;
 use crate::m20250001_000003_create_pet_types_table::PetTypes;

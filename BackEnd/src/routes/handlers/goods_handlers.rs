@@ -1,5 +1,4 @@
 use actix_web::{get, post, web, Responder, HttpResponse};
-use serde::{Deserialize, Serialize};
 use sea_orm::{
     ActiveModelTrait, 
     ActiveValue::Set, 
@@ -8,29 +7,11 @@ use sea_orm::{
     ColumnTrait
 };
 
-use crate::utils::{api_response::ApiResponse, app_state::AppState};
-
-#[derive(Serialize, Deserialize)]
-struct GoodsModel{
-    id_ext: Option<String>,
-    name: String,
-    pic: Option<String>,
-    description: Option<String>,
-    producer_id: i32,
-    article: String,
-    class_id: i32,
-    group_id: i32,
-    description_imp: Option<String>,
-}
-
-#[derive(Serialize, Deserialize)]
-struct Goods{
-    name: String,
-    pic: Option<String>,
-    description: Option<String>,
-    article: String,
-    description_imp: Option<String>,
-}
+use crate::utils::{
+    api_response::ApiResponse, 
+    app_state::AppState,
+    model::{Goods, GoodsModel}
+};
 
 #[post("/create")]
 pub async fn create(

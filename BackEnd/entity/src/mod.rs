@@ -16,5 +16,6 @@ pub mod pet_types;
 pub mod pets;
 pub mod producers;
 pub mod reports;
+pub mod sea_orm_active_enums;
 pub mod stocks;
 pub mod user;
